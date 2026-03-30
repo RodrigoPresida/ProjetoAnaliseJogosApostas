@@ -1,0 +1,31 @@
+data,time_mandante,time_visitante,gols_mandante,gols_visitante,escanteios_mandante,escanteios_visitante,cartoes_amarelos_mandante,cartoes_amarelos_visitante
+2023-04-15,Flamengo,Palmeiras,2,1,6,4,2,3
+2023-04-22,Flamengo,Corinthians,3,0,7,3,1,4
+2023-04-29,Flamengo,São Paulo,1,1,5,5,3,2
+2023-05-06,Flamengo,Grêmio,2,0,8,2,2,1
+2023-05-13,Flamengo,Athletico,1,0,6,3,1,2
+2023-04-15,Palmeiras,Flamengo,1,2,4,6,3,2
+2023-04-22,Palmeiras,Grêmio,2,0,6,3,2,1
+2023-04-29,Palmeiras,São Paulo,1,0,5,4,1,2
+2023-05-06,Palmeiras,Corinthians,3,1,7,2,2,3
+2023-05-13,Palmeiras,Athletico,2,1,5,3,1,2
+2023-04-16,Corinthians,Grêmio,0,0,3,4,2,2
+2023-04-23,Corinthians,Palmeiras,0,3,2,7,4,2
+2023-04-30,Corinthians,Athletico,1,1,4,3,3,1
+2023-05-07,Corinthians,São Paulo,2,1,5,4,2,3
+2023-05-14,Corinthians,Flamengo,0,3,3,7,3,1
+2023-04-16,São Paulo,Athletico,1,0,5,3,2,1
+2023-04-23,São Paulo,Flamengo,1,1,5,5,2,3
+2023-04-30,São Paulo,Corinthians,1,2,4,5,3,2
+2023-05-07,São Paulo,Grêmio,2,0,6,3,1,2
+2023-05-14,São Paulo,Palmeiras,0,1,4,5,2,1
+2023-04-17,Grêmio,Athletico,1,1,4,4,2,2
+2023-04-24,Grêmio,Corinthians,0,0,4,3,2,2
+2023-05-01,Grêmio,Palmeiras,0,2,3,6,1,2
+2023-05-08,Grêmio,Flamengo,0,2,2,8,2,2
+2023-05-15,Grêmio,São Paulo,0,2,3,6,2,1
+2023-04-17,Athletico,São Paulo,0,1,3,5,1,2
+2023-04-24,Athletico,Flamengo,0,1,3,6,2,1
+2023-05-01,Athletico,Corinthians,1,1,3,4,1,3
+2023-05-08,Athletico,Palmeiras,1,2,3,5,2,1
+2023-05-15,Athletico,Grêmio,1,1,4,4,2,2
