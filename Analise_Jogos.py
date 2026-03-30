@@ -1,12 +1,15 @@
-import requests
 import matplotlib.pyplot as plt
+
 
 class TabelaJogo:
     def __init__(self, time_a, time_b):
         self.time_a = time_a
         self.time_b = time_b
-        self.resultado = None
-        self.estatisticas_time_a = {
+        self.estatisticas_time_a = self._estatisticas_vazias()
+        self.estatisticas_time_b = self._estatisticas_vazias()
+
+    def _estatisticas_vazias(self):
+        return {
             "Gols por Jogo": [],
             "Média de Gols": None,
             "Escanteios por Jogo": [],
@@ -15,119 +18,71 @@ class TabelaJogo:
             "Média de Cartões Amarelos": None,
             "Vitórias": 0,
             "Derrotas": 0,
-            "Empates": 0
-        }
-        self.estatisticas_time_b = {
-            "Gols por Jogo": [],
-            "Média de Gols": None,
-            "Escanteios por Jogo": [],
-            "Média de Escanteios": None,
-            "Cartões Amarelos por Jogo": [],
-            "Média de Cartões Amarelos": None,
-            "Vitórias": 0,
-            "Derrotas": 0,
-            "Empates": 0
+            "Empates": 0,
         }
 
-    def adicionar_resultado(self, resultado):
-        self.resultado = resultado
+    def _coletar_dados_time(self, time):
+        gols, escanteios, cartoes = [], [], []
 
-    def adicionar_estatisticas_time_a(self, estatisticas):
-        self.estatisticas_time_a.update(estatisticas)
+        for i in range(1, 6):
+            gols.append(int(input(f"Gols do {time} no jogo {i}: ")))
+            cartoes.append(int(input(f"Cartões amarelos do {time} no jogo {i}: ")))
+            escanteios.append(int(input(f"Escanteios do {time} no jogo {i}: ")))
 
-    def adicionar_estatisticas_time_b(self, estatisticas):
-        self.estatisticas_time_b.update(estatisticas)
+        return {
+            "Gols por Jogo": gols,
+            "Média de Gols": sum(gols) / len(gols),
+            "Escanteios por Jogo": escanteios,
+            "Média de Escanteios": sum(escanteios) / len(escanteios),
+            "Cartões Amarelos por Jogo": cartoes,
+            "Média de Cartões Amarelos": sum(cartoes) / len(cartoes),
+        }
 
-    def obter_gols_escanteios_cartoes_por_jogo(self, time):
-        gols_por_jogo = []
-        escanteios_por_jogo = []
-        cartoes_amarelos_por_jogo = []
+    def coletar_dados(self):
+        print(f"\n{'─' * 40}")
+        print(f"Dados para: {self.time_a}")
+        self.estatisticas_time_a.update(self._coletar_dados_time(self.time_a))
 
-        for i in range(5):
-            gols = int(input(f"Informe quantos gols o {time} fez no jogo {i + 1}: "))
-            gols_por_jogo.append(gols)
+        print(f"\n{'─' * 40}")
+        print(f"Dados para: {self.time_b}")
+        self.estatisticas_time_b.update(self._coletar_dados_time(self.time_b))
 
-            cartoes_amarelos = int(input(f"Informe quantos cartões amarelos o {time} teve no jogo {i + 1}: "))
-            cartoes_amarelos_por_jogo.append(cartoes_amarelos)
-
-            escanteios = int(input(f"Informe quantos escanteios o {time} teve no jogo {i + 1}: "))
-            escanteios_por_jogo.append(escanteios)
-
-        media_gols = sum(gols_por_jogo) / len(gols_por_jogo) if gols_por_jogo else 0
-        media_escanteios = sum(escanteios_por_jogo) / len(escanteios_por_jogo) if escanteios_por_jogo else 0
-        media_cartoes_amarelos = sum(cartoes_amarelos_por_jogo) / len(cartoes_amarelos_por_jogo) if cartoes_amarelos_por_jogo else 0
-
-        return gols_por_jogo, media_gols, escanteios_por_jogo, media_escanteios, cartoes_amarelos_por_jogo, media_cartoes_amarelos
-
-    def criar_jogo_manualmente(self):
-        gols_time_a, media_gols_a, escanteios_time_a, media_escanteios_a, cartoes_amarelos_time_a, media_cartoes_amarelos_a = self.obter_gols_escanteios_cartoes_por_jogo(self.time_a)
-        self.adicionar_estatisticas_time_a({
-            "Gols por Jogo": gols_time_a,
-            "Média de Gols": media_gols_a,
-            "Escanteios por Jogo": escanteios_time_a,
-            "Média de Escanteios": media_escanteios_a,
-            "Cartões Amarelos por Jogo": cartoes_amarelos_time_a,
-            "Média de Cartões Amarelos": media_cartoes_amarelos_a
-        })
-
-    def criar_jogo_manualmente_time_b(self):
-        gols_time_b, media_gols_b, escanteios_time_b, media_escanteios_b, cartoes_amarelos_time_b, media_cartoes_amarelos_b = self.obter_gols_escanteios_cartoes_por_jogo(self.time_b)
-        self.adicionar_estatisticas_time_b({
-            "Gols por Jogo": gols_time_b,
-            "Média de Gols": media_gols_b,
-            "Escanteios por Jogo": escanteios_time_b,
-            "Média de Escanteios": media_escanteios_b,
-            "Cartões Amarelos por Jogo": cartoes_amarelos_time_b,
-            "Média de Cartões Amarelos": media_cartoes_amarelos_b
-        })
+    def _grafico_barras(self, chave, ylabel, titulo):
+        jogos = range(1, 6)
+        plt.figure(figsize=(8, 5))
+        plt.bar(
+            [j - 0.2 for j in jogos],
+            self.estatisticas_time_a[chave],
+            width=0.4,
+            label=f"{self.time_a} (média: {self.estatisticas_time_a[f'Média de {chave.split()[0]}']:.2f})",
+        )
+        plt.bar(
+            [j + 0.2 for j in jogos],
+            self.estatisticas_time_b[chave],
+            width=0.4,
+            label=f"{self.time_b} (média: {self.estatisticas_time_b[f'Média de {chave.split()[0]}']:.2f})",
+        )
+        plt.xlabel("Jogo")
+        plt.ylabel(ylabel)
+        plt.title(titulo)
+        plt.xticks(jogos, [f"J{j}" for j in jogos])
+        plt.legend()
+        plt.tight_layout()
+        plt.show()
 
     def exibir_graficos(self):
-        # Gráfico de barras para os gols
-        plt.bar(range(1, 6), self.estatisticas_time_a['Gols por Jogo'], label=f"{self.time_a} - Média: {self.estatisticas_time_a['Média de Gols']:.2f}")
-        plt.bar(range(7, 12), self.estatisticas_time_b['Gols por Jogo'], label=f"{self.time_b} - Média: {self.estatisticas_time_b['Média de Gols']:.2f}")
-        plt.xlabel('Jogo')
-        plt.ylabel('Gols')
-        plt.title('Estatísticas de Gols')
-        plt.legend()
-        plt.show()
+        self._grafico_barras("Gols por Jogo", "Gols", f"Gols — {self.time_a} vs {self.time_b}")
+        self._grafico_barras("Escanteios por Jogo", "Escanteios", f"Escanteios — {self.time_a} vs {self.time_b}")
+        self._grafico_barras("Cartões Amarelos por Jogo", "Cartões Amarelos", f"Cartões Amarelos — {self.time_a} vs {self.time_b}")
 
-        # Gráfico de barras para os escanteios
-        plt.bar(range(1, 6), self.estatisticas_time_a['Escanteios por Jogo'], label=f"{self.time_a} - Média: {self.estatisticas_time_a['Média de Escanteios']:.2f}")
-        plt.bar(range(7, 12), self.estatisticas_time_b['Escanteios por Jogo'], label=f"{self.time_b} - Média: {self.estatisticas_time_b['Média de Escanteios']:.2f}")
-        plt.xlabel('Jogo')
-        plt.ylabel('Escanteios')
-        plt.title('Estatísticas de Escanteios')
-        plt.legend()
-        plt.show()
-
-        # Gráfico de barras para os cartões amarelos
-        plt.bar(range(1, 6), self.estatisticas_time_a['Cartões Amarelos por Jogo'], label=f"{self.time_a} - Média: {self.estatisticas_time_a['Média de Cartões Amarelos']:.2f}")
-        plt.bar(range(7, 12), self.estatisticas_time_b['Cartões Amarelos por Jogo'], label=f"{self.time_b} - Média: {self.estatisticas_time_b['Média de Cartões Amarelos']:.2f}")
-        plt.xlabel('Jogo')
-        plt.ylabel('Cartões Amarelos')
-        plt.title('Estatísticas de Cartões Amarelos')
-        plt.legend()
-        plt.show()
 
 if __name__ == "__main__":
-    # Solicitar nomes dos times
-    time_a = input("Informe o nome do Time A: ").upper()
-    time_b = input("Informe o nome do Time B: ").upper()
+    time_a = input("Nome do Time A: ").upper()
+    time_b = input("Nome do Time B: ").upper()
 
-    # Criar objeto da classe TabelaJogo
-    novo_jogo = TabelaJogo(time_a, time_b)
+    jogo = TabelaJogo(time_a, time_b)
+    jogo.coletar_dados()
 
-    # Preencher dados para o Time A
-    print("\n" + "-" * 40)  # Linha de separação
-    print("\nPreenchimento dos dados para o Time A:")
-    novo_jogo.criar_jogo_manualmente()
-
-    # Preencher dados para o Time B
-    print("\n" + "-" * 40)  # Linha de separação
-    print("\nPreenchimento dos dados para o Time B:")
-    novo_jogo.criar_jogo_manualmente_time_b()
-
-    # Exibir gráficos
-    print("\n" + "-" * 40)  # Linha de separação
-    print("\nExibindo Gráficos:")
-    novo_jogo.exibir_graficos()
+    print(f"\n{'─' * 40}")
+    print("Exibindo gráficos...")
+    jogo.exibir_graficos()
