@@ -7,7 +7,7 @@ import os
 sns.set_theme(style="darkgrid", palette="muted")
 
 ARQUIVO_DADOS = os.path.join(os.path.dirname(__file__), "dados", "partidas.csv")
-TIMES_DISPONIVEIS = ["Flamengo", "Palmeiras", "Corinthians", "São Paulo", "Grêmio", "Athletico"]
+TIMES_DISPONIVEIS = ["Flamengo", "Palmeiras", "Corinthians", "São Paulo", "Grêmio", "Fortaleza"]
 
 COR_A = "#1f77b4"
 COR_B = "#ff7f0e"
@@ -188,7 +188,7 @@ def grafico_heatmap_geral(df):
 
 if __name__ == "__main__":
     print("=" * 52)
-    print("  ANÁLISE DE JOGOS — BRASILEIRÃO 2023")
+    print("  ANÁLISE DE JOGOS — BRASILEIRÃO 2025")
     print("=" * 52)
 
     df = carregar_dados()
